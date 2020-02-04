@@ -4,7 +4,8 @@ import sys
 import pygame
 from board import Board
 from display import display_gridlines, display_board, display_selected_number
-from mouse import get_hovered_cell
+from key import get_selected_number
+from mouse import get_hovered_cell, mark_board
 from util import SIZE, Colors, CELL_SIZE, NOTE_SIZE
 
 
@@ -24,42 +25,13 @@ class Sudoku:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_1:
-                        self.selected_number = '1'
-                    if event.key == pygame.K_2:
-                        self.selected_number = '2'
-                    if event.key == pygame.K_3:
-                        self.selected_number = '3'
-                    if event.key == pygame.K_4:
-                        self.selected_number = '4'
-                    if event.key == pygame.K_5:
-                        self.selected_number = '5'
-                    if event.key == pygame.K_6:
-                        self.selected_number = '6'
-                    if event.key == pygame.K_7:
-                        self.selected_number = '7'
-                    if event.key == pygame.K_8:
-                        self.selected_number = '8'
-                    if event.key == pygame.K_9:
-                        self.selected_number = '9'
-                    if event.key == pygame.K_ESCAPE:
-                        self.selected_number = None
+                    self.selected_number = get_selected_number(event)
                     if event.key == pygame.K_r:
                         self.board.reset()
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.selected_number:
-                        sel = get_hovered_cell()
-                        if event.button == 1:  # Left click
-                            if self.selected_number == self.board.get_cell(sel[0], sel[1]):
-                                self.board.unset_cell(row=sel[0], col=sel[1])
-                            else:
-                                self.board.set_cell(row=sel[0], col=sel[1], val=int(self.selected_number))
-                                self.board.clear_cell_notes(row=sel[0], col=sel[1])
-                        if event.button == 3:  # Right click
-                            if self.selected_number in self.board.get_cell_notes(sel[0], sel[1]):
-                                self.board.unnote_cell(row=sel[0], col=sel[1], note=int(self.selected_number))
-                            else:
-                                self.board.note_cell(row=sel[0], col=sel[1], note=int(self.selected_number))
+                        mark_board(event, self.board, self.selected_number)
+
             self.screen.fill(Colors.white)
             display_gridlines(self.screen)
             display_board(self.screen, self.board, self.numbers, self.note_numbers)
