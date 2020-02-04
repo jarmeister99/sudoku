@@ -1,6 +1,6 @@
 class Board:
     def __init__(self):
-        self.grid = [['~' for j in range(9)] for i in range(9)]
+        self.grid = [['0' for j in range(9)] for i in range(9)]
         self.notes = [[[] for j in range(9)] for i in range(9)]
 
     def get_cell(self, row, col):
@@ -19,7 +19,7 @@ class Board:
 
     def unset_cell(self, row, col):
         Board.validate_pos(row, col)
-        self.grid[row - 1][col - 1] = '~'
+        self.grid[row - 1][col - 1] = '0'
 
     def note_cell(self, row, col, note):
         Board.validate_pos(row, col)
@@ -47,7 +47,7 @@ class Board:
         self.notes = [[[] for j in range(9)] for i in range(9)]
 
     def clear_grid(self):
-        self.grid = [['~' for j in range(9)] for i in range(9)]
+        self.grid = [['0' for j in range(9)] for i in range(9)]
 
     @staticmethod
     def display_board(board):
@@ -113,7 +113,7 @@ class Board:
     def get_row(self, row):
         if not 1 <= row <= 9:
             raise ValueError()
-        return list(filter(lambda element: element != '~', self.grid[row - 1]))
+        return list(filter(lambda element: element != '0', self.grid[row - 1]))
 
     def get_col(self, col):
         if not 1 <= col <= 9:
@@ -121,7 +121,7 @@ class Board:
         column = []
         for row in self.grid:
             column.append(row[col - 1])
-        return list(filter(lambda element: element != '~', column))
+        return list(filter(lambda element: element != '0', column))
 
     def get_box(self, row, col):
         Board.validate_pos(row, col)

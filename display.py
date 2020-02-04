@@ -20,7 +20,7 @@ def display_board(screen, board, numbers, note_numbers):
     pos = [0, 0]
     for row_i, row in enumerate(board.grid):
         for col_i, cell in enumerate(row):
-            if cell != '~':
+            if cell != '0':
                 screen.blit(numbers[cell], (pos[1], pos[0]))
             elif board.notes[row_i][col_i]:
                 notes = board.notes[row_i][col_i]
