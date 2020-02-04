@@ -1,6 +1,6 @@
 import pygame
 
-from util import Colors, SIZE, CELL_SIZE, NOTE_SIZE
+from util import Colors, BOARD_SIZE, CELL_SIZE, NOTE_SIZE
 
 
 def display_selected_number(screen, number_img):
@@ -11,9 +11,9 @@ def display_selected_number(screen, number_img):
 def display_gridlines(screen):
     for i in range(8):
         pygame.draw.line(screen, Colors.black if (i + 1) % 3 == 0 else Colors.gray, (CELL_SIZE * (i + 1), 0),
-                         (CELL_SIZE * (i + 1), SIZE))
+                         (CELL_SIZE * (i + 1), BOARD_SIZE))
         pygame.draw.line(screen, Colors.black if (i + 1) % 3 == 0 else Colors.gray, (0, CELL_SIZE * (i + 1)),
-                         (SIZE, CELL_SIZE * (i + 1)))
+                         (BOARD_SIZE, CELL_SIZE * (i + 1)))
 
 
 def display_board(screen, board, numbers, note_numbers):

@@ -5,8 +5,8 @@ import pygame
 from board import Board
 from display import display_gridlines, display_board, display_selected_number
 from key import get_selected_number
-from mouse import get_hovered_cell, mark_board
-from util import SIZE, Colors, CELL_SIZE, NOTE_SIZE
+from mouse import mark_board, get_hovered_cell
+from util import BOARD_SIZE, Colors, CELL_SIZE, NOTE_SIZE, SETTINGS_HEIGHT
 
 
 class Sudoku:
@@ -16,7 +16,7 @@ class Sudoku:
         self.note_numbers = {}
         self.load_numbers()
         self.board = Board()
-        self.screen = pygame.display.set_mode((SIZE, SIZE))
+        self.screen = pygame.display.set_mode((BOARD_SIZE, BOARD_SIZE + SETTINGS_HEIGHT))
         self.loop()
 
     def loop(self):
@@ -28,6 +28,8 @@ class Sudoku:
                     self.selected_number = get_selected_number(event)
                     if event.key == pygame.K_r:
                         self.board.reset()
+                    if event.key == pygame.K_c:
+                        print(get_hovered_cell())
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.selected_number:
                         mark_board(event, self.board, self.selected_number)

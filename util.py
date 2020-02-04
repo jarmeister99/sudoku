@@ -1,8 +1,9 @@
 from pygame import Color
 
-SIZE = 500
-CELL_SIZE = SIZE // 9
-NOTE_SIZE = SIZE // 27
+BOARD_SIZE = 500
+SETTINGS_HEIGHT = BOARD_SIZE // 5
+CELL_SIZE = BOARD_SIZE // 9
+NOTE_SIZE = BOARD_SIZE // 27
 
 
 class Colors:
