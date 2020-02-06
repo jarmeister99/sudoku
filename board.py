@@ -2,6 +2,7 @@ class Board:
     def __init__(self):
         self.grid = [['0' for j in range(9)] for i in range(9)]
         self.notes = [[[] for j in range(9)] for i in range(9)]
+        self.blocked_cells = []
 
     def get_cell(self, row, col):
         Board.validate_pos(row, col)
@@ -140,3 +141,23 @@ class Board:
                 col -= 2
             else:
                 col += 1
+
+    def load_test_board(self):
+        self.grid = [
+            ['0', '0', '0', '2', '6', '0', '7', '0', '1'],
+            ['6', '8', '0', '0', '7', '0', '0', '9', '1'],
+            ['1', '9', '0', '0', '0', '4', '5', '0', '0'],
+            ['8', '2', '0', '1', '0', '0', '0', '4', '0'],
+            ['0', '0', '4', '6', '0', '2', '9', '0', '0'],
+            ['0', '5', '0', '0', '0', '3', '0', '2', '8'],
+            ['0', '0', '9', '3', '0', '0', '0', '7', '4'],
+            ['0', '4', '0', '0', '5', '0', '0', '3', '6'],
+            ['7', '0', '3', '0', '1', '8', '0', '0', '0']
+        ]
+        self.set_blocked_cells()
+
+    def set_blocked_cells(self):
+        for row_i, row in enumerate(self.grid):
+            for col_i, col in enumerate(self.grid):
+                if self.get_cell(row_i + 1, col_i + 1) != '0':
+                    self.blocked_cells.append((row_i + 1, col_i + 1))
