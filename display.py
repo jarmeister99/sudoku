@@ -16,26 +16,22 @@ def display_gridlines(screen):
                          (BOARD_SIZE, CELL_SIZE * (i + 1)))
 
 
-def display_board(screen, board, numbers, note_numbers):
-    pos = [0, 0]
-    for row_i, row in enumerate(board.grid):
-        for col_i, cell in enumerate(row):
-            if cell != '0':
-                screen.blit(numbers[cell], (pos[1], pos[0]))
-            elif board.notes[row_i][col_i]:
-                notes = board.notes[row_i][col_i]
-                note_pos = pos.copy()
-                note_i = 1
-                while note_i < 10:
-                    if str(note_i) in notes:
-                        screen.blit(note_numbers[str(note_i)], (note_pos[1], note_pos[0]))
-                    if note_i % 3 == 0:
-                        note_pos[1] -= 2 * NOTE_SIZE
-                        note_pos[0] += NOTE_SIZE
-                    else:
-                        note_pos[1] += NOTE_SIZE
-                    note_i += 1
+def display_board(screen, board, numbers, note_numbers, placed, placed_numbers):
+    for row in range(1, 10):
+        for col in range(1, 10):
+            cell_val = board.get_cell(row, col)
+            cell_notes = board.get_cell_notes(row, col)
 
-            pos[1] += CELL_SIZE
-        pos[1] = 0
-        pos[0] += CELL_SIZE
+            if cell_val != '0':
+                if (col, row) in placed:
+                    screen.blit(placed_numbers[cell_val], ((col - 1) * CELL_SIZE, (row - 1) * CELL_SIZE))
+                else:
+                    screen.blit(numbers[cell_val], ((col - 1) * CELL_SIZE, (row - 1) * CELL_SIZE))
+            elif cell_notes:
+                for i in range(9):
+                    potential_note = i + 1
+                    note_pos = (i // 3, i % 3)
+                    note_x_location = ((col - 1) * CELL_SIZE) + (note_pos[1] * NOTE_SIZE)
+                    note_y_location = ((row - 1) * CELL_SIZE) + (note_pos[0] * NOTE_SIZE)
+                    if str(potential_note) in cell_notes:
+                        screen.blit(note_numbers[str(potential_note)], (note_x_location, note_y_location))

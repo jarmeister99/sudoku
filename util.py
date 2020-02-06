@@ -10,3 +10,4 @@ class Colors:
     black = Color(0, 0, 0)
     white = Color(255, 255, 255)
     gray = Color(200, 200, 200)
+    green = Color(50, 160, 20)
