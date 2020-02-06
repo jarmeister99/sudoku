@@ -41,7 +41,8 @@ class Sudoku:
                             if loc[1]:
                                 self.placed.append(loc[0])
                             else:
-                                self.placed.remove(loc[0])
+                                if loc[0] in self.placed:
+                                    self.placed.remove(loc[0])
 
             self.screen.fill(Colors.white)
             display_gridlines(self.screen)

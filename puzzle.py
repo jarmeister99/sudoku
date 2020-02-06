@@ -1,4 +1,5 @@
-from random import shuffle
+from random import shuffle, randint
+from copy import deepcopy
 
 
 def generate(board):
@@ -12,6 +13,54 @@ def generate(board):
     shuffle(vals)
     board.grid[0] = vals
     solve(board)
+
+    for i in range(60):
+        row = randint(1, 9)
+        col = randint(1, 9)
+        while board.get_cell(row, col) == '0':
+            row = randint(1, 9)
+            col = randint(1, 9)
+            print(f'Trying {row}, {col}')
+        board.set_cell(row, col, 0)
+        print(i)
+    print(check_uniqueness(board))
+
+
+
+def check_uniqueness(board):
+    """
+
+    :param board: A board representing a playable Sudoku puzzle
+    :return: A boolean representing whether the puzzle has only one unique solution
+    """
+    copy_1 = deepcopy(board)
+    copy_2 = deepcopy(board)
+    solve_unique(copy_1, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    solve_unique(copy_2, [9, 8, 7, 6, 5, 4, 3, 2, 1])
+    return copy_1.grid == copy_2.grid
+
+
+def solve_unique(board, vals):
+    """
+
+    :param board: A board representing a playable Sudoku puzzle
+    :param vals: An ordered list representing the sequence of values to check in the backtracking algorithm
+    :return: The solved input board
+    """
+
+    find = find_empty(board)
+    if not find:
+        return True
+    else:
+        row, col = find
+    for val in vals:
+        if valid(board, row, col, val):
+            board.set_cell(row, col, val)
+            if solve_unique(board, vals):
+                return True
+            # Unset the cell
+            board.set_cell(row, col, 0)
+    return False
 
 
 def solve(board):
