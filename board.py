@@ -145,7 +145,7 @@ class Board:
     def load_test_board(self):
         self.grid = [
             ['0', '0', '0', '2', '6', '0', '7', '0', '1'],
-            ['6', '8', '0', '0', '7', '0', '0', '9', '1'],
+            ['6', '8', '0', '0', '7', '0', '0', '9', '0'],
             ['1', '9', '0', '0', '0', '4', '5', '0', '0'],
             ['8', '2', '0', '1', '0', '0', '0', '4', '0'],
             ['0', '0', '4', '6', '0', '2', '9', '0', '0'],
@@ -158,6 +158,6 @@ class Board:
 
     def set_blocked_cells(self):
         for row_i, row in enumerate(self.grid):
-            for col_i, col in enumerate(self.grid):
+            for col_i, col in enumerate(row):
                 if self.get_cell(row_i + 1, col_i + 1) != '0':
                     self.blocked_cells.append((row_i + 1, col_i + 1))
