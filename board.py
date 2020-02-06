@@ -41,14 +41,11 @@ class Board:
         self.notes[row - 1][col - 1] = []
 
     def reset(self):
-        self.clear_notes()
-        self.clear_grid()
-
-    def clear_notes(self):
-        self.notes = [[[] for j in range(9)] for i in range(9)]
-
-    def clear_grid(self):
-        self.grid = [['0' for j in range(9)] for i in range(9)]
+        for row_i, row in enumerate(self.grid):
+            for col_i, col in enumerate(row):
+                if (row_i + 1, col_i + 1) not in self.blocked_cells:
+                    self.set_cell(row_i + 1, col_i + 1, 0)
+                    self.clear_cell_notes(row_i + 1, col_i + 1)
 
     @staticmethod
     def display_board(board):

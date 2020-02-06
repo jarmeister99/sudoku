@@ -13,9 +13,7 @@ from util import BOARD_SIZE, Colors, CELL_SIZE, NOTE_SIZE, SETTINGS_HEIGHT
 class Sudoku:
     def __init__(self):
         self.selected_number = None
-        self.blocked_numbers = {}
-        self.note_numbers = {}
-        self.placed_numbers = {}
+        self.images = {}
         self.load_numbers()
         self.board = Board()
         self.board.load_test_board()
@@ -49,22 +47,25 @@ class Sudoku:
 
             self.screen.fill(Colors.white)
             display_gridlines(self.screen)
-            display_board(self.screen, self.board, self.blocked_numbers, self.note_numbers, self.placed,
-                          self.placed_numbers)
+            display_board(self.screen, self.images, self.board, self.placed)
             if self.selected_number:
-                display_selected_number(self.screen, self.blocked_numbers[self.selected_number])
+                display_selected_number(self.screen, self.images['blocked'][self.selected_number])
             pygame.display.flip()
 
     def load_numbers(self):
+        blocked_numbers = {}
+        note_numbers = {}
+        placed_numbers = {}
         for number in os.listdir('img/numbers'):
             number_img = pygame.image.load(f'img/numbers/{number}')
-            self.blocked_numbers[number[0]] = pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE))
-            self.note_numbers[number[0]] = pygame.transform.scale(number_img, (NOTE_SIZE, NOTE_SIZE))
+            blocked_numbers[number[0]] = pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE))
+            note_numbers[number[0]] = pygame.transform.scale(number_img, (NOTE_SIZE, NOTE_SIZE))
             pa = pygame.PixelArray(pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE)))
             pa.replace(Colors.black, Colors.green)
-            self.placed_numbers[number[0]] = pa.make_surface()
-        print(self.blocked_numbers)
-        print(self.placed_numbers)
+            placed_numbers[number[0]] = pa.make_surface()
+        self.images['blocked'] = blocked_numbers
+        self.images['note'] = note_numbers
+        self.images['placed'] = placed_numbers
 
 
 if __name__ == '__main__':

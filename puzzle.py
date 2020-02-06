@@ -3,6 +3,7 @@ from board import Board
 
 def solve(board):
     """
+
     :param board: A board representing an unsolved Sudoku puzzle
     :return: The solved input board
     """
@@ -27,10 +28,10 @@ def solve(board):
 
 def find_empty(board):
     """
+
     :param board: A board representing a Sudoku puzzle
     :return: The location of an empty cell in the board in the form (row, col). Returns None if no empty cells exist.
     """
-
     for row_i, row in enumerate(board.grid):
         for col_i, col in enumerate(row):
             if board.get_cell(row_i + 1, col_i + 1) == '0':
@@ -40,6 +41,7 @@ def find_empty(board):
 
 def valid(board, row, col, val):
     """
+
     :param board: A board representing a Sudoku puzzle
     :param row: The row of the cell to check
     :param col: The column of the cell to check
@@ -49,8 +51,3 @@ def valid(board, row, col, val):
     return str(val) not in board.get_row(row) and \
            str(val) not in board.get_col(col) and \
            str(val) not in board.get_box(row, col)
-
-
-if __name__ == '__main__':
-    b = Board()
-    Board.display_board(b)
