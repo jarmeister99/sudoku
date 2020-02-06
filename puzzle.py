@@ -1,4 +1,17 @@
-from board import Board
+from random import shuffle
+
+
+def generate(board):
+    """
+
+    :param board: An empty board representing an empty Sudoku puzzle
+    :return: A board representing a playable Sudoku puzzle
+    """
+    board.wipe()
+    vals = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    shuffle(vals)
+    board.grid[0] = vals
+    solve(board)
 
 
 def solve(board):
@@ -14,7 +27,9 @@ def solve(board):
     else:
         row, col = find
     # --------------------------
-    for val in range(1, 10):
+    vals = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    shuffle(vals)
+    for val in vals:
         if valid(board, row, col, val):
             board.set_cell(row, col, val)
             if solve(board):

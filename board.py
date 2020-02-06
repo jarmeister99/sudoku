@@ -40,6 +40,11 @@ class Board:
         Board.validate_pos(row, col)
         self.notes[row - 1][col - 1] = []
 
+    def wipe(self):
+        self.grid = [['0' for j in range(9)] for i in range(9)]
+        self.notes = [[[] for j in range(9)] for i in range(9)]
+        self.blocked_cells = []
+
     def reset(self):
         for row_i, row in enumerate(self.grid):
             for col_i, col in enumerate(row):
