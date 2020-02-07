@@ -54,16 +54,21 @@ class Sudoku:
         blocked_numbers = {}
         note_numbers = {}
         placed_numbers = {}
+        invalid_numbers = {}
         for number in os.listdir('img/numbers'):
             number_img = pygame.image.load(f'img/numbers/{number}')
             blocked_numbers[number[0]] = pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE))
             note_numbers[number[0]] = pygame.transform.scale(number_img, (NOTE_SIZE, NOTE_SIZE))
+
             pa = pygame.PixelArray(pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE)))
             pa.replace(Colors.black, Colors.green)
             placed_numbers[number[0]] = pa.make_surface()
+            pa.replace(Colors.green, Colors.red)
+            invalid_numbers[number[0]] = pa.make_surface()
         self.images['blocked'] = blocked_numbers
         self.images['note'] = note_numbers
         self.images['placed'] = placed_numbers
+        self.images['invalid'] = invalid_numbers
 
 
 if __name__ == '__main__':

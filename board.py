@@ -52,7 +52,6 @@ class Board:
         for pos in Board.get_row_positions(row) + Board.get_col_positions(col) + Board.get_box_positions(row, col):
             self.unnote_cell(pos[0], pos[1], val)
 
-
     def wipe(self):
         self.grid = [['0' for j in range(9)] for i in range(9)]
         self.notes = [[[] for j in range(9)] for i in range(9)]
@@ -87,6 +86,20 @@ class Board:
         return not self.get_invalid_rows() and \
                not self.get_invalid_cols() and \
                not self.get_invalid_boxes()
+
+    def cell_invalid(self, row, col):
+        """
+
+        :param row: An index representing the row of the cell to validate
+        :param col: An index representing the col of the cell to validate
+        :return: A boolean representing whether the cell has a legal value within
+        """
+        to_check = Board.get_row_positions(row) + Board.get_col_positions(col) + Board.get_box_positions(row, col)
+        to_check.remove((row, col))
+        for pos in to_check:
+            if self.get_cell(row, col) == self.get_cell(pos[0], pos[1]):
+                return True
+        return False
 
     def get_invalid_rows(self):
         invalid_rows = []

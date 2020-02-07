@@ -43,7 +43,10 @@ def display_board(screen, images, board, placed):
 
             if cell_val != '0':
                 if (col, row) in placed:
-                    screen.blit(images['placed'][cell_val], ((col - 1) * CELL_SIZE, (row - 1) * CELL_SIZE))
+                    if board.cell_invalid(row, col):
+                        screen.blit(images['invalid'][cell_val], ((col - 1) * CELL_SIZE, (row - 1) * CELL_SIZE))
+                    else:
+                        screen.blit(images['placed'][cell_val], ((col - 1) * CELL_SIZE, (row - 1) * CELL_SIZE))
                 else:
                     screen.blit(images['blocked'][cell_val], ((col - 1) * CELL_SIZE, (row - 1) * CELL_SIZE))
             elif cell_notes:

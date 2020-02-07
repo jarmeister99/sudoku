@@ -11,3 +11,4 @@ class Colors:
     white = Color(255, 255, 255)
     gray = Color(200, 200, 200)
     green = Color(50, 160, 20)
+    red = Color(160, 20, 20)
