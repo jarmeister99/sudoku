@@ -33,12 +33,25 @@ class Board:
         Board.validate_pos(row, col)
         if not 0 <= note <= 9:
             raise ValueError()
-        self.notes[row - 1][col - 1].remove(str(note))
-        self.notes[row - 1][col - 1].sort()
+        if str(note) in self.notes[row - 1][col - 1]:
+            self.notes[row - 1][col - 1].remove(str(note))
+            self.notes[row - 1][col - 1].sort()
 
     def clear_cell_notes(self, row, col):
         Board.validate_pos(row, col)
         self.notes[row - 1][col - 1] = []
+
+    def update_notes(self, row, col, val):
+        """
+
+        :param row: An index representing the row for which notes should be updated
+        :param col: An index representing the col for which notes should be updated
+        :param val: The value to remove from appropriate cell notes
+        :return: Removes the input value from appropriate cell notes, centered on the input cell
+        """
+        for pos in Board.get_row_positions(row) + Board.get_col_positions(col) + Board.get_box_positions(row, col):
+            self.unnote_cell(pos[0], pos[1], val)
+
 
     def wipe(self):
         self.grid = [['0' for j in range(9)] for i in range(9)]
@@ -78,14 +91,14 @@ class Board:
     def get_invalid_rows(self):
         invalid_rows = []
         for row_i in range(9):
-            if len(set(self.get_row(row_i + 1))) != len(self.get_row(row_i + 1)):
+            if len(set(self.get_row_values(row_i + 1))) != len(self.get_row_values(row_i + 1)):
                 invalid_rows.append(row_i + 1)
         return invalid_rows
 
     def get_invalid_cols(self):
         invalid_cols = []
         for col_i in range(9):
-            if len(set(self.get_col(col_i + 1))) != len(self.get_col(col_i + 1)):
+            if len(set(self.get_col_values(col_i + 1))) != len(self.get_col_values(col_i + 1)):
                 invalid_cols.append(col_i + 1)
         return invalid_cols
 
@@ -105,7 +118,8 @@ class Board:
                 else:
                     row -= 2
                     col += 1
-            if len(set(self.get_box(row, col))) != len(self.get_box(row, col)) and box not in invalid_boxes:
+            if len(set(self.get_box_values(row, col))) != len(
+                    self.get_box_values(row, col)) and box not in invalid_boxes:
                 invalid_boxes.append(box)
             if col % 3 == 0:
                 row += 1
@@ -113,12 +127,59 @@ class Board:
             else:
                 col += 1
 
-    def get_row(self, row):
+    def get_row_values(self, row):
         if not 1 <= row <= 9:
             raise ValueError()
         return list(filter(lambda element: element != '0', self.grid[row - 1]))
 
-    def get_col(self, col):
+    @staticmethod
+    def get_row_positions(row):
+        """
+
+        :param row: An index representing the row to grab cell positions from
+        :return: A list of tuples (row, col) representing cell positions of the row
+        """
+        if not 1 <= row <= 9:
+            raise ValueError()
+        return [(row, i) for i in range(1, 10)]
+
+    @staticmethod
+    def get_col_positions(col):
+        """
+
+        :param col: An index representing the col to grab cell positions from
+        :return: A list of tuples (row, col) representing cell positions of the col
+        """
+        if not 1 <= col <= 9:
+            raise ValueError()
+        return [(i, col) for i in range(1, 10)]
+
+    @staticmethod
+    def get_box_positions(row, col):
+        """
+
+        :param row: An index representing the col of the box to grab cell positions from
+        :param col: An index representing the row of the box to grab cell positions from
+        :return: A list of tuples (row, col) representing cell positions of the box
+        """
+        Board.validate_pos(row, col)
+        positions = []
+        if (col - 1) % 3 == 0:
+            pass
+        else:
+            while (col - 1) % 3 != 0:
+                col -= 1
+        if (row - 1) % 3 == 0:
+            pass
+        else:
+            while (row - 1) % 3 != 0:
+                row -= 1
+        positions += [(row, col + i) for i in range(3)]
+        positions += [(row + 1, col + i) for i in range(3)]
+        positions += [(row + 2, col + i) for i in range(3)]
+        return positions
+
+    def get_col_values(self, col):
         if not 1 <= col <= 9:
             raise ValueError()
         column = []
@@ -126,7 +187,8 @@ class Board:
             column.append(row[col - 1])
         return list(filter(lambda element: element != '0', column))
 
-    def get_box(self, row, col):
+    # TODO: Make simpler. Use get_box_position code
+    def get_box_values(self, row, col):
         Board.validate_pos(row, col)
         box = []
         while row % 3 != 1:

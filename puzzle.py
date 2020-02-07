@@ -71,7 +71,6 @@ def solve(board, vals):
             board.set_cell(row, col, val)
             if solve(board, vals):
                 return True
-            # Unset the cell
             board.set_cell(row, col, 0)
     return False
 
@@ -99,6 +98,6 @@ def valid(board, row, col, val):
     :param val: The value to be potentially placed in the selected cell
     :return: A boolean indicating whether the value can be placed in the selected cell according to Sudoku's constraints
     """
-    return str(val) not in board.get_row(row) and \
-           str(val) not in board.get_col(col) and \
-           str(val) not in board.get_box(row, col)
+    return str(val) not in board.get_row_values(row) and \
+           str(val) not in board.get_col_values(col) and \
+           str(val) not in board.get_box_values(row, col)

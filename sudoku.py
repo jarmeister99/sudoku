@@ -16,7 +16,6 @@ class Sudoku:
         self.images = {}
         self.load_numbers()
         self.board = Board()
-        #self.board.load_test_board()
         self.screen = pygame.display.set_mode((BOARD_SIZE, BOARD_SIZE + SETTINGS_HEIGHT))
         self.placed = []
         self.loop()
