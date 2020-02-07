@@ -3,6 +3,7 @@ class Board:
         self.grid = [['0' for j in range(9)] for i in range(9)]
         self.notes = [[[] for j in range(9)] for i in range(9)]
         self.blocked_cells = []
+        self.forbidden_cells = []
 
     def get_cell(self, row, col):
         Board.validate_pos(row, col)
@@ -56,6 +57,7 @@ class Board:
         self.grid = [['0' for j in range(9)] for i in range(9)]
         self.notes = [[[] for j in range(9)] for i in range(9)]
         self.blocked_cells = []
+        self.forbidden_cells = []
 
     def reset(self):
         for row_i, row in enumerate(self.grid):
@@ -92,7 +94,7 @@ class Board:
 
         :param row: An index representing the row of the cell to validate
         :param col: An index representing the col of the cell to validate
-        :return: A boolean representing   whether the cell has a legal value within
+        :return: A boolean representing whether the cell has a legal value within
         """
         to_check = Board.get_row_positions(row) + Board.get_col_positions(col) + Board.get_box_positions(row, col)
         to_check = list(filter(lambda a: a != (row, col), to_check))
@@ -238,3 +240,21 @@ class Board:
             for col_i, col in enumerate(row):
                 if self.get_cell(row_i + 1, col_i + 1) != '0':
                     self.blocked_cells.append((row_i + 1, col_i + 1))
+
+    def set_forbidden(self, row, col):
+        """
+
+        :param row: An index representing the row of the cell to mark as forbidden
+        :param col: An index representing the col of the cell to mark as forbidden
+        :return: Marks the input cell as forbidden
+        """
+        self.forbidden_cells.append((row, col))
+
+    def is_forbidden(self, row, col):
+        """
+
+        :param row: An index representing the row of the cell to check
+        :param col: An index representing the col of the cell to check
+        :return: A boolean representing whether the input cell is forbidden
+        """
+        return (row, col) in self.forbidden_cells

@@ -1,7 +1,8 @@
-from random import shuffle, randint
+from random import shuffle, randint, seed
 from copy import deepcopy
 
 
+# TODO: Why can't I generate 46 or greater removals?
 def generate(board, num_remove):
     """
 
@@ -14,6 +15,7 @@ def generate(board, num_remove):
     shuffle(vals)
     board.grid[0] = vals
     solve(board, [int(val) for val in vals])
+    attempts = 1
 
     # TODO: Make this more efficient
     while True:
@@ -22,6 +24,8 @@ def generate(board, num_remove):
             board.grid = board_copy.grid
             board.set_blocked_cells()
             break
+        attempts += 1
+    return attempts
 
 
 def generate_attempt(board, num_remove):
@@ -38,6 +42,7 @@ def generate_attempt(board, num_remove):
             row = randint(1, 9)
             col = randint(1, 9)
         board.set_cell(row, col, 0)
+        board.set_forbidden(row, col)
     return check_uniqueness(board)
 
 
@@ -68,7 +73,7 @@ def solve(board, vals):
     else:
         row, col = find
     for val in vals:
-        if valid(board, row, col, val):
+        if valid(board, row, col, val) and not board.is_forbidden(row, col):
             board.set_cell(row, col, val)
             if solve(board, vals):
                 return True
