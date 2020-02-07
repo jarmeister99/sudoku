@@ -31,8 +31,10 @@ class Sudoku:
                         self.board.reset()
                     if event.key == pygame.K_s:
                         solve(self.board, list(range(1, 10)))
+                    # TODO: Why can't I generate 46 or greater removals?
                     if event.key == pygame.K_g:
                         generate(self.board, 45)
+                        self.placed = []
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.selected_number:
                         loc = mark_board(event, self.board, self.selected_number, self.board.blocked_cells)

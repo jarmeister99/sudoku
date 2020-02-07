@@ -76,7 +76,6 @@ def solve(board, vals):
     return False
 
 
-
 def find_empty(board):
     """
 
