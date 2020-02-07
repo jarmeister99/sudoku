@@ -67,27 +67,11 @@ class Board:
                     self.clear_cell_notes(row_i + 1, col_i + 1)
 
     @staticmethod
-    def display_board(board):
-        for row in board.grid:
-            print(' '.join(str(cell) for cell in row))
-
-    @staticmethod
-    def display_notes(board, row, col):
-        Board.validate_pos(row, col)
-        for notes in board.notes[row - 1][col - 1]:
-            print(f'{notes}', end=' ')
-
-    @staticmethod
     def validate_pos(row, col):
         if not 1 <= row <= 9:
             raise ValueError()
         if not 1 <= col <= 9:
             raise ValueError()
-
-    def validate(self):
-        return not self.get_invalid_rows() and \
-               not self.get_invalid_cols() and \
-               not self.get_invalid_boxes()
 
     def cell_invalid(self, row, col):
         """
@@ -220,20 +204,6 @@ class Board:
                 col -= 2
             else:
                 col += 1
-
-    def load_test_board(self):
-        self.grid = [
-            ['0', '0', '0', '2', '6', '0', '7', '0', '1'],
-            ['6', '8', '0', '0', '7', '0', '0', '9', '0'],
-            ['1', '9', '0', '0', '0', '4', '5', '0', '0'],
-            ['8', '2', '0', '1', '0', '0', '0', '4', '0'],
-            ['0', '0', '4', '6', '0', '2', '9', '0', '0'],
-            ['0', '5', '0', '0', '0', '3', '0', '2', '8'],
-            ['0', '0', '9', '3', '0', '0', '0', '7', '4'],
-            ['0', '4', '0', '0', '5', '0', '0', '3', '6'],
-            ['7', '0', '3', '0', '1', '8', '0', '0', '0']
-        ]
-        self.set_blocked_cells()
 
     def set_blocked_cells(self):
         for row_i, row in enumerate(self.grid):

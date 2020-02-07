@@ -34,14 +34,6 @@ class Sudoku:
                     if event.key == pygame.K_g:
                         generate(self.board, 60)
                         self.placed = []
-                    if event.key == pygame.K_d:
-                        metrics = {}
-                        for n in range(40, 60):
-                            sum = 0
-                            for i in range(20):
-                                sum += generate(Board(), n)
-                            metrics[n] = sum / 20
-                        print(metrics)
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.selected_number:
                         loc = mark_board(event, self.board, self.selected_number, self.board.blocked_cells)
