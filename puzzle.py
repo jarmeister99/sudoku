@@ -13,7 +13,7 @@ def generate(board, num_remove):
     vals = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
     shuffle(vals)
     board.grid[0] = vals
-    solve(board)
+    solve(board, [int(val) for val in vals])
 
     # TODO: Make this more efficient
     while True:
@@ -21,6 +21,7 @@ def generate(board, num_remove):
         if generate_attempt(board_copy, num_remove):
             board.grid = board_copy.grid
             break
+
 
 def generate_attempt(board, num_remove):
     """
@@ -39,7 +40,6 @@ def generate_attempt(board, num_remove):
     return check_uniqueness(board)
 
 
-
 def check_uniqueness(board):
     """
 
@@ -48,12 +48,12 @@ def check_uniqueness(board):
     """
     copy_1 = deepcopy(board)
     copy_2 = deepcopy(board)
-    solve_unique(copy_1, [1, 2, 3, 4, 5, 6, 7, 8, 9])
-    solve_unique(copy_2, [9, 8, 7, 6, 5, 4, 3, 2, 1])
+    solve(copy_1, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    solve(copy_2, [9, 8, 7, 6, 5, 4, 3, 2, 1])
     return copy_1.grid == copy_2.grid
 
 
-def solve_unique(board, vals):
+def solve(board, vals):
     """
 
     :param board: A board representing a playable Sudoku puzzle
@@ -69,38 +69,12 @@ def solve_unique(board, vals):
     for val in vals:
         if valid(board, row, col, val):
             board.set_cell(row, col, val)
-            if solve_unique(board, vals):
+            if solve(board, vals):
                 return True
             # Unset the cell
             board.set_cell(row, col, 0)
     return False
 
-
-def solve(board):
-    """
-
-    :param board: A board representing an unsolved Sudoku puzzle
-    :return: The solved input board
-    """
-    # Base case: no empty spaces
-    find = find_empty(board)
-    if not find:
-        return True
-    else:
-        row, col = find
-    # --------------------------
-    vals = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    shuffle(vals)
-    for val in vals:
-        if valid(board, row, col, val):
-            board.set_cell(row, col, val)
-            if solve(board):
-                # Base case: no empty spaces
-                return True
-            # Unset the cell
-            board.set_cell(row, col, 0)
-            # ... continue the loop, checking the next value in the range
-    return False
 
 
 def find_empty(board):
