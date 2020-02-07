@@ -2,7 +2,6 @@ from random import shuffle, randint, seed
 from copy import deepcopy
 
 
-# TODO: Why can't I generate 46 or greater removals?
 def generate(board, num_remove):
     """
 
@@ -17,7 +16,6 @@ def generate(board, num_remove):
     solve(board, [int(val) for val in vals])
     attempts = 1
 
-    # TODO: Make this more efficient
     while True:
         board_copy = deepcopy(board)
         if generate_attempt(board_copy, num_remove):
