@@ -20,6 +20,7 @@ def generate(board, num_remove):
         board_copy = deepcopy(board)
         if generate_attempt(board_copy, num_remove):
             board.grid = board_copy.grid
+            board.set_blocked_cells()
             break
 
 

@@ -92,10 +92,10 @@ class Board:
 
         :param row: An index representing the row of the cell to validate
         :param col: An index representing the col of the cell to validate
-        :return: A boolean representing whether the cell has a legal value within
+        :return: A boolean representing   whether the cell has a legal value within
         """
         to_check = Board.get_row_positions(row) + Board.get_col_positions(col) + Board.get_box_positions(row, col)
-        to_check.remove((row, col))
+        to_check = list(filter(lambda a: a != (row, col), to_check))
         for pos in to_check:
             if self.get_cell(row, col) == self.get_cell(pos[0], pos[1]):
                 return True

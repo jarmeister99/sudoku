@@ -30,7 +30,6 @@ def mark_board(event, board, selected_number, blocked_cells):
         if event.button == 1:
             # If the selected number already occupies the cell chosen
             if selected_number == board.get_cell(sel[0], sel[1]):
-
                 board.unset_cell(row=sel[0], col=sel[1])
                 return (sel[1], sel[0]), False
             # If the selected number does not occupy the cell chosen

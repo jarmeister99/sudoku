@@ -30,7 +30,7 @@ class Sudoku:
                     if event.key == pygame.K_r:
                         self.board.reset()
                     if event.key == pygame.K_s:
-                        solve(self.board)
+                        solve(self.board, list(range(1, 10)))
                     if event.key == pygame.K_g:
                         generate(self.board, 45)
                 if event.type == pygame.MOUSEBUTTONUP:
