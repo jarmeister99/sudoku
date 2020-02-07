@@ -33,7 +33,7 @@ class Sudoku:
                     if event.key == pygame.K_s:
                         solve(self.board)
                     if event.key == pygame.K_g:
-                        generate(self.board)
+                        generate(self.board, 45)
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.selected_number:
                         loc = mark_board(event, self.board, self.selected_number, self.board.blocked_cells)

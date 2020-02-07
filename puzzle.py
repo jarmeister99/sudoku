@@ -2,10 +2,11 @@ from random import shuffle, randint
 from copy import deepcopy
 
 
-def generate(board):
+def generate(board, num_remove):
     """
 
     :param board: An empty board representing an empty Sudoku puzzle
+    :param num_remove: The number of cells that should be empty
     :return: A board representing a playable Sudoku puzzle
     """
     board.wipe()
@@ -14,16 +15,28 @@ def generate(board):
     board.grid[0] = vals
     solve(board)
 
-    for i in range(60):
+    # TODO: Make this more efficient
+    while True:
+        board_copy = deepcopy(board)
+        if generate_attempt(board_copy, num_remove):
+            board.grid = board_copy.grid
+            break
+
+def generate_attempt(board, num_remove):
+    """
+
+    :param board: A full board representing a completed Sudoku puzzle
+    :param num_remove: The number of cells that should be empty
+    :return: A boolean representing whether the board has only one unique solution
+    """
+    for i in range(num_remove):
         row = randint(1, 9)
         col = randint(1, 9)
         while board.get_cell(row, col) == '0':
             row = randint(1, 9)
             col = randint(1, 9)
-            print(f'Trying {row}, {col}')
         board.set_cell(row, col, 0)
-        print(i)
-    print(check_uniqueness(board))
+    return check_uniqueness(board)
 
 
 
