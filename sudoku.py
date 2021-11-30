@@ -3,9 +3,9 @@ import sys
 
 import pygame
 from src.grid.board import Board
-from src.display import display_gridlines, display_board, display_selected_number
-from src.key import get_selected_number
-from src.mouse import mark_board
+from src.ui.display import display_gridlines, display_board, display_selected_number
+from src.ui.key import get_selected_number
+from src.ui.mouse import mark_board
 from src.puzzle import solve, generate
 from src.util import BOARD_SIZE, Colors, CELL_SIZE, NOTE_SIZE, SETTINGS_HEIGHT
 
@@ -22,6 +22,7 @@ class Sudoku:
 
     def loop(self):
         while True:
+            # handle input
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
@@ -36,36 +37,40 @@ class Sudoku:
                         self.placed = []
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.selected_number:
-                        loc = mark_board(event, self.board, self.selected_number, self.board.blocked_cells)
-                        if loc:
-                            if loc[1]:
-                                self.placed.append(loc[0])
-                            else:
-                                if loc[0] in self.placed:
-                                    self.placed.remove(loc[0])
+                        mark_board(event, self.board, self.selected_number)
 
+            # update graphics
             self.screen.fill(Colors.white)
             display_gridlines(self.screen)
-            display_board(self.screen, self.images, self.board, self.placed)
+            display_board(screen=self.screen, images=self.images, board=self.board)
             if self.selected_number:
                 display_selected_number(self.screen, self.images['blocked'][self.selected_number])
             pygame.display.flip()
 
     def load_numbers(self):
+        """
+        Load all images from image directory to image store in memory
+        :return:
+        """
         blocked_numbers = {}
         note_numbers = {}
         placed_numbers = {}
         invalid_numbers = {}
+
+        # load images from image directory
         for number in os.listdir('img/numbers'):
             number_img = pygame.image.load(f'img/numbers/{number}')
-            blocked_numbers[number[0]] = pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE))
-            note_numbers[number[0]] = pygame.transform.scale(number_img, (NOTE_SIZE, NOTE_SIZE))
+            blocked_numbers[int(number[0])] = pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE))
+            note_numbers[int(number[0])] = pygame.transform.scale(number_img, (NOTE_SIZE, NOTE_SIZE))
 
             pa = pygame.PixelArray(pygame.transform.scale(number_img, (CELL_SIZE, CELL_SIZE)))
             pa.replace(Colors.black, Colors.green)
-            placed_numbers[number[0]] = pa.make_surface()
+            placed_numbers[int(number[0])] = pa.make_surface()
             pa.replace(Colors.green, Colors.red)
-            invalid_numbers[number[0]] = pa.make_surface()
+            invalid_numbers[int(number[0])] = pa.make_surface()
+
+        # load all images to image store
+        # store[blocked | note ...][1 ... 9] -> img
         self.images['blocked'] = blocked_numbers
         self.images['note'] = note_numbers
         self.images['placed'] = placed_numbers

@@ -35,7 +35,7 @@ def generate_attempt(board, num_remove):
     for i in range(num_remove):
         row = randint(1, 9)
         col = randint(1, 9)
-        while board.get_cell(row, col) == '0':
+        while board.get_cell_value(row, col) == '0':
             row = randint(1, 9)
             col = randint(1, 9)
         board.set_cell(row, col, 0)
@@ -86,7 +86,7 @@ def find_empty(board):
     """
     for row_i, row in enumerate(board.grid):
         for col_i, col in enumerate(row):
-            if board.get_cell(row_i + 1, col_i + 1) == '0':
+            if board.get_cell_value(row_i + 1, col_i + 1) == '0':
                 return row_i + 1, col_i + 1
     return None
 
