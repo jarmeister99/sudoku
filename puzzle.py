@@ -4,7 +4,6 @@ from copy import deepcopy
 
 def generate(board, num_remove):
     """
-
     :param board: An empty board representing an empty Sudoku puzzle
     :param num_remove: The number of cells that should be empty
     :return: A board representing a playable Sudoku puzzle
