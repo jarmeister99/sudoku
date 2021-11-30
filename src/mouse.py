@@ -1,6 +1,6 @@
 import pygame
 
-from util import CELL_SIZE
+from src.util import CELL_SIZE
 
 
 def get_hovered_cell():

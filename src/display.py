@@ -1,6 +1,6 @@
 import pygame
 
-from util import Colors, BOARD_SIZE, CELL_SIZE, NOTE_SIZE
+from src.util import Colors, CELL_SIZE, BOARD_SIZE
 
 
 def display_selected_number(screen, number_img):

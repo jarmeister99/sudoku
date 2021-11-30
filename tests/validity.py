@@ -1,6 +1,6 @@
 import unittest
 
-from board import Board
+from src.grid.board import Board
 
 
 class Validity(unittest.TestCase):

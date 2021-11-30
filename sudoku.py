@@ -2,12 +2,12 @@ import os
 import sys
 
 import pygame
-from board import Board
-from display import display_gridlines, display_board, display_selected_number
-from key import get_selected_number
-from mouse import mark_board, get_hovered_cell
-from puzzle import solve, generate
-from util import BOARD_SIZE, Colors, CELL_SIZE, NOTE_SIZE, SETTINGS_HEIGHT
+from src.grid.board import Board
+from src.display import display_gridlines, display_board, display_selected_number
+from src.key import get_selected_number
+from src.mouse import mark_board
+from src.puzzle import solve, generate
+from src.util import BOARD_SIZE, Colors, CELL_SIZE, NOTE_SIZE, SETTINGS_HEIGHT
 
 
 class Sudoku:
