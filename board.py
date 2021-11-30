@@ -1,7 +1,7 @@
 class Board:
     def __init__(self):
-        self.grid = [['0' for j in range(9)] for i in range(9)]
-        self.notes = [[[] for j in range(9)] for i in range(9)]
+        self.grid = [['0' for _ in range(9)] for _ in range(9)]
+        self.notes = [[[] for _ in range(9)] for _ in range(9)]
         self.blocked_cells = []
         self.forbidden_cells = []
 
