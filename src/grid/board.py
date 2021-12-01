@@ -66,14 +66,12 @@ class Board:
         while col % 3 != 1:
             col -= 1
         while True:
+            cell = self.get_cell(row=row, col=col)
+            box.append(cell)
             # if we are at a row boundary and a column boundary
             if row % 3 == 0 and col % 3 == 0:
                 # return all the cells we have seen
                 return box
-            cell = self.get_cell(row=row, col=col)
-            # copy cell if it has a value
-            if cell.val:
-                box.append(cell)
             # if we are at a row boundary
             # .. move to next row
             if col % 3 == 0:
@@ -118,7 +116,22 @@ class Board:
         if not 1 <= col <= 9:
             raise ValueError()
 
-    def update_house_validity(self, row: int, col: int):
+    def clear_house_notes(self, row: int, col: int, note: int) -> None:
+        """
+        Remove house notes if the note value is the same value provided
+        :param row: The row of the target house
+        :param col: The col of the target house
+        :param note: The value to remove from house notes
+        :return: None
+        """
+        row_cells = self.get_cells_in_row(row=row)
+        col_cells = self.get_cells_in_col(col=col)
+        box_cells = self.get_cells_in_box(row=row, col=col)
+        for group in [row_cells, col_cells, box_cells]:
+            for cell in group:
+                cell.remove_note(note=note)
+
+    def update_house_validity(self, row: int, col: int) -> None:
         """
         Mark house members as invalid or valid
         :param row: The row of the target house
@@ -128,7 +141,6 @@ class Board:
         row_cells = self.get_cells_in_row(row=row)
         col_cells = self.get_cells_in_col(col=col)
         box_cells = self.get_cells_in_box(row=row, col=col)
-
         marked = []
         for group in [row_cells, col_cells, box_cells]:
             seen = []
@@ -148,5 +160,3 @@ class Board:
                     marked.append(cell)
                 elif cell not in marked:
                     cell.valid = True
-
-

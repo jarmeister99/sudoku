@@ -36,6 +36,7 @@ def mark_board(event, board: Board, selected_number: int):
             # clicked cell does NOT have selected val
             else:
                 cell.set(val=selected_number)
+                board.clear_house_notes(row=cell.row, col=cell.col, note=selected_number)
             board.update_house_validity(row=cell.row, col=cell.col)
 
         if event.button == 3:  # right click

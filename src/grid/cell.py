@@ -22,7 +22,8 @@ class Cell:
         :param note: The note to remove from the cell
         :return: None
         """
-        self.notes.remove(note)
+        if note in self.notes:
+            self.notes.remove(note)
 
     def reset(self) -> None:
         """
@@ -51,3 +52,5 @@ class Cell:
         self.val = val
         self.notes = []
 
+    def __repr__(self):
+        return f'({self.row}, {self.col})'
