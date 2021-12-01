@@ -31,9 +31,9 @@ class Sudoku:
                     if event.key == pygame.K_r:
                         self.board.reset()
                     if event.key == pygame.K_s:
-                        solve(self.board, list(range(1, 10)))
+                        solve(self.board)
                     if event.key == pygame.K_g:
-                        generate(self.board, 60)
+                        generate(self.board)
                         self.placed = []
                 if event.type == pygame.MOUSEBUTTONUP:
                     if self.selected_number:

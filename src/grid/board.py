@@ -91,7 +91,7 @@ class Board:
         Reset game state to blank state
         :return: None
         """
-        self.grid = [[Cell for _ in range(9)] for _ in range(9)]
+        self.grid = [[Cell(row=row, col=col) for col in range(1, 10)] for row in range(1, 10)]
 
     def reset(self) -> None:
         """
@@ -130,6 +130,23 @@ class Board:
         for group in [row_cells, col_cells, box_cells]:
             for cell in group:
                 cell.remove_note(note=note)
+
+    def is_val_in_house(self, row:int, col: int, val: int) -> bool:
+        """
+        Return whether the given value is already in the targeted house
+        :param row: The row of the target house
+        :param col: The col of the target house
+        :param val: The value to check the target house for
+        :return: Whether the given value is already in the target house
+        """
+        row_cells = self.get_cells_in_row(row=row)
+        col_cells = self.get_cells_in_col(col=col)
+        box_cells = self.get_cells_in_box(row=row, col=col)
+        for group in [row_cells, col_cells, box_cells]:
+            for cell in group:
+                if cell.val == val:
+                    return True
+        return False
 
     def update_house_validity(self, row: int, col: int) -> None:
         """

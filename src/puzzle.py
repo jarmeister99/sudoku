@@ -1,49 +1,29 @@
 from random import shuffle, randint, seed
 from copy import deepcopy
 
+from src.grid.board import Board
+from src.grid.cell import Cell
 
-def generate(board, num_remove):
+
+def generate(board):
     """
     :param board: An empty board representing an empty Sudoku puzzle
     :param num_remove: The number of cells that should be empty
     :return: A board representing a playable Sudoku puzzle
     """
-    board.wipe()
-    vals = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    board.wipe()  # reset board
+
+    # create randomized first row of cells
+    vals = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     shuffle(vals)
-    board.grid[0] = vals
-    solve(board, [int(val) for val in vals])
-    attempts = 1
-
-    while True:
-        board_copy = deepcopy(board)
-        if generate_attempt(board_copy, num_remove):
-            board.grid = board_copy.grid
-            board.set_blocked_cells()
-            break
-        attempts += 1
-    return attempts
+    first_row = []
+    for i, val in enumerate(vals):
+        first_row.append(Cell(row=1, col=i + 1, val=val))
+    board.grid[0] = first_row
+    solve(board=board)
 
 
-def generate_attempt(board, num_remove):
-    """
-
-    :param board: A full board representing a completed Sudoku puzzle
-    :param num_remove: The number of cells that should be empty
-    :return: A boolean representing whether the board has only one unique solution
-    """
-    for i in range(num_remove):
-        row = randint(1, 9)
-        col = randint(1, 9)
-        while board.get_cell_value(row, col) == '0':
-            row = randint(1, 9)
-            col = randint(1, 9)
-        board.set_cell(row, col, 0)
-        board.set_forbidden(row, col)
-    return check_uniqueness(board)
-
-
-def check_uniqueness(board):
+def check_uniqueness(board: Board):
     """
 
     :param board: A board representing a playable Sudoku puzzle
@@ -56,50 +36,36 @@ def check_uniqueness(board):
     return copy_1.grid == copy_2.grid
 
 
-def solve(board, vals):
+def solve(board: Board) -> None or bool:
     """
 
     :param board: A board representing a playable Sudoku puzzle
     :param vals: An ordered list representing the sequence of values to check in the backtracking algorithm
-    :return: The solved input board
+    :return: None
     """
-
-    find = find_empty(board)
-    if not find:
+    # base case: we are out of empty slots
+    if not (cell := find_empty(board=board)):
         return True
-    else:
-        row, col = find
-    for val in vals:
-        if valid(board, row, col, val) and not board.is_forbidden(row, col):
-            board.set_cell(row, col, val)
-            if solve(board, vals):
+    for num in range(1, 10):
+        if not board.is_val_in_house(row=cell.row, col=cell.col, val=num):
+            cell.set(val=num)
+            # return if success
+            if solve(board=board):
                 return True
-            board.set_cell(row, col, 0)
+            # unmake and try again if fail
+            cell.set(val=None)
+    # trigger backtracking
     return False
 
 
-def find_empty(board):
+def find_empty(board: Board) -> Cell or None:
     """
-
+    Return the first empty cell
     :param board: A board representing a Sudoku puzzle
-    :return: The location of an empty cell in the board in the form (row, col). Returns None if no empty cells exist.
+    :return: The first empty cell
     """
-    for row_i, row in enumerate(board.grid):
-        for col_i, col in enumerate(row):
-            if board.get_cell_value(row_i + 1, col_i + 1) == '0':
-                return row_i + 1, col_i + 1
+    for row in board.grid:
+        for cell in row:
+            if not cell.val:
+                return cell
     return None
-
-
-def valid(board, row, col, val):
-    """
-
-    :param board: A board representing a Sudoku puzzle
-    :param row: The row of the cell to check
-    :param col: The column of the cell to check
-    :param val: The value to be potentially placed in the selected cell
-    :return: A boolean indicating whether the value can be placed in the selected cell according to Sudoku's constraints
-    """
-    return str(val) not in board.get_row_values(row) and \
-           str(val) not in board.get_col_values(col) and \
-           str(val) not in board.get_box_values(row, col)
